@@ -1,10 +1,12 @@
 package net.sonicrushxii.beyondthehorizon.event_handlers.server;
 
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -13,6 +15,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.sonicrushxii.beyondthehorizon.baseform.data.BaseformItemData;
 import net.sonicrushxii.beyondthehorizon.event_handlers.CraftHandlers;
+
+import java.util.Objects;
 
 public class ServerWorldHandler
 {
@@ -70,6 +74,20 @@ public class ServerWorldHandler
                 }
             }
 
+            //Item cleanup
+            for(ItemEntity taggedItemEntity : level.getEntities(EntityTypeTest.forClass(ItemEntity.class), item -> {
+                try {
+                    ItemStack itemStack = item.getItem();
+                    return Objects.requireNonNull(itemStack.get(DataComponents.CUSTOM_DATA)).copyTag().getByte("BeyondTheHorizon") == (byte)1;
+                }
+                catch (NullPointerException ignore)
+                {
+                    return false;
+                }
+            }))
+            {
+                taggedItemEntity.remove(Entity.RemovalReason.DISCARDED);
+            }
         }
     }
 }

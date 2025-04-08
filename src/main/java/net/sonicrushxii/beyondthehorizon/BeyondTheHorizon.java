@@ -1,23 +1,13 @@
 package net.sonicrushxii.beyondthehorizon;
 
-import net.neoforged.fml.ModContainer;
-import net.sonicrushxii.beyondthehorizon.event_handlers.EquipmentChangeHandler;
-import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
-import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientArmorHandler;
-import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandler;
-import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
-import net.sonicrushxii.beyondthehorizon.modded.ModCreativeModeTabs;
-import net.sonicrushxii.beyondthehorizon.modded.ModItems;
-import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -25,6 +15,15 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.sonicrushxii.beyondthehorizon.event_handlers.EquipmentChangeHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerEventHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientArmorHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandler;
+import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
+import net.sonicrushxii.beyondthehorizon.modded.ModCreativeModeTabs;
+import net.sonicrushxii.beyondthehorizon.modded.ModItems;
+import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(BeyondTheHorizon.MOD_ID)
@@ -50,6 +49,7 @@ public class BeyondTheHorizon
 
         // Register ourselves for server and other game events we are interested in.
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(PlayerEventHandler.class);
         NeoForge.EVENT_BUS.register(PlayerTickHandler.class);
         NeoForge.EVENT_BUS.register(EquipmentChangeHandler.class);
         NeoForge.EVENT_BUS.register(ServerWorldHandler.class);
