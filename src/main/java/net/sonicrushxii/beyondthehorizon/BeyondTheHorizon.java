@@ -3,8 +3,11 @@ package net.sonicrushxii.beyondthehorizon;
 import net.neoforged.fml.ModContainer;
 import net.sonicrushxii.beyondthehorizon.event_handlers.EquipmentChangeHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientArmorHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandler;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
+import net.sonicrushxii.beyondthehorizon.modded.ModCreativeModeTabs;
+import net.sonicrushxii.beyondthehorizon.modded.ModItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -36,17 +39,20 @@ public class BeyondTheHorizon
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public BeyondTheHorizon(IEventBus modEventBus, ModContainer modContainer)
     {
+        // Register the commonSetup method for modloading
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(ClientArmorHandler::clientItemInitialize);
+
         //Register Modded Components
         ModAttachments.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
+        ModItems.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(PlayerTickHandler.class);
         NeoForge.EVENT_BUS.register(EquipmentChangeHandler.class);
         NeoForge.EVENT_BUS.register(ServerWorldHandler.class);
-
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

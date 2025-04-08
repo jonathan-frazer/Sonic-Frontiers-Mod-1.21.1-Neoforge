@@ -16,47 +16,41 @@ import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 import java.util.Objects;
 
 public class ServerPlayerEquipmentHandler {
-    public static void onEquipmentChange(Player pPlayer, LivingEquipmentChangeEvent event)
-    {
-        //Extract Server Player
-        if(!(pPlayer instanceof ServerPlayer player)) return;
+    public static void onEquipmentChange(Player pPlayer, LivingEquipmentChangeEvent event) {
+        // Only run on server
+        if (!(pPlayer instanceof ServerPlayer player)) return;
 
-        //Extract Player Sonic Data
+        // Only react to helmet slot
+        if (event.getSlot() != EquipmentSlot.HEAD) return;
+
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
 
-        //Check Sonic Head
-        if(event.getSlot() == EquipmentSlot.HEAD)
-        {
+        tryBaseformTransform(player, playerSonicData);
+    }
 
-            ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
+    private static void tryBaseformTransform(ServerPlayer player, PlayerSonicData playerSonicData) {
+        System.out.println("[" + System.currentTimeMillis() + "] ");
 
-            //Transform
-            try {
-                if (headItem.getItem() == Items.PLAYER_HEAD) {
+        ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 
-                    //Custom Data
-                    CompoundTag nbt = Objects.requireNonNull(headItem.get(DataComponents.CUSTOM_DATA)).copyTag();
+        // === Check if we're wearing the correct Sonic head ===
+        if (!headItem.isEmpty() && headItem.getItem() == Items.PLAYER_HEAD) {
+            CompoundTag customData = Objects.requireNonNull(headItem.get(DataComponents.CUSTOM_DATA)).copyTag();
 
-                    if(!nbt.contains("BeyondTheHorizon")) throw new NullPointerException();
-                    if (nbt.getByte("BeyondTheHorizon") == (byte) 2 && !playerSonicData.isSonic) {
-                        System.out.println("Transform");
-                        BaseformActivate.onBaseformActivate(player);
-                    }
+            if (customData.contains("BeyondTheHorizon") && customData.getByte("BeyondTheHorizon") == 2) {
+                if (!playerSonicData.isSonic) {
+                    System.out.println("Transform");
+                    BaseformActivate.onBaseformActivate(player);
                 }
-            }catch(NullPointerException ignored){}
-
-
-            //Un-Transform
-            try {
-                CompoundTag nbt = Objects.requireNonNull(headItem.get(DataComponents.CUSTOM_DATA)).copyTag();
-                if (nbt.getByte("BeyondTheHorizon") != (byte) 2) throw new NullPointerException();
-            }
-            catch(NullPointerException e) {
-                if(playerSonicData.isSonic) {
-                    System.out.println("Un-Transform");
-                    BaseformDeactivate.onBaseformDeactivate(player);
-                }
+                return; // If it's valid Sonic head, don't untransform
             }
         }
+
+        // === If we get here, the player isn't wearing the correct head ===
+        if (playerSonicData.isSonic) {
+            System.out.println("Un-Transform");
+            BaseformDeactivate.onBaseformDeactivate(player);
+        }
     }
+
 }

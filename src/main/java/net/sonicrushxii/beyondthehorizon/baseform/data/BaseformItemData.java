@@ -32,34 +32,96 @@ public class BaseformItemData
     }
 
     public static ItemStack baseformSonicHead; static {
-    baseformSonicHead = new ItemStack(Items.PLAYER_HEAD);
+        baseformSonicHead = new ItemStack(Items.PLAYER_HEAD);
 
-    // 🟦 1. Set the custom "BeyondTheHorizon" byte using CustomData
-    CompoundTag customTag = new CompoundTag();
-    customTag.putByte("BeyondTheHorizon", (byte) 2);
-    baseformSonicHead.set(DataComponents.CUSTOM_DATA, CustomData.of(customTag));
+        // 🟦 1. Set the custom "BeyondTheHorizon" byte using CustomData
+        CompoundTag customTag = new CompoundTag();
+        customTag.putByte("BeyondTheHorizon", (byte) 2);
+        baseformSonicHead.set(DataComponents.CUSTOM_DATA, CustomData.of(customTag));
 
-    // 🟦 2. Set the SkullOwner with texture
-    GameProfile profile = new GameProfile(
-            new UUID(512370214, -95272899L ^ -2003262887L ^ 1067375885L), // Generate a mostly consistent UUID
-            "SonicFrontiers"
-    );
-    profile.getProperties().put("textures", new Property(
-            "textures",
-            "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTBjN2NlZWNjODliNTY0MjNhOWU4YWFiMTE3NjRkZTI5MDIyNjU4MzA5YTUyNjY2M2JmMzQyNGY0N2NhZDlmOCJ9fX0="
-    ));
-    baseformSonicHead.set(DataComponents.PROFILE, new ResolvableProfile(profile));
+        // 🟦 2. Set the SkullOwner with texture
+        GameProfile profile = new GameProfile(
+                new UUID(512370214, -95272899L ^ -2003262887L ^ 1067375885L), // Generate a mostly consistent UUID
+                "SonicFrontiers"
+        );
+        profile.getProperties().put("textures", new Property(
+                "textures",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTBjN2NlZWNjODliNTY0MjNhOWU4YWFiMTE3NjRkZTI5MDIyNjU4MzA5YTUyNjY2M2JmMzQyNGY0N2NhZDlmOCJ9fX0="
+        ));
+        baseformSonicHead.set(DataComponents.PROFILE, new ResolvableProfile(profile));
 
-    // 🟦 3. Set the display name
-    baseformSonicHead.set(DataComponents.CUSTOM_NAME,
-            Component.literal("Sonic Head").withStyle(Style.EMPTY.withColor(0x0000FF).withItalic(false))
-    );
+        // 🟦 3. Set the display name
+        baseformSonicHead.set(DataComponents.CUSTOM_NAME,
+                Component.literal("Sonic Head").withStyle(Style.EMPTY.withColor(0x0000FF).withItalic(false))
+        );
 
-    // 🟦 4. Set the lore text
-    baseformSonicHead.set(DataComponents.LORE, new ItemLore(List.of(
-            Component.literal("Adapted from Sonic Frontiers").withStyle(style -> style.withColor(0xFF55FF)) // light_purple
-    )));
+        // 🟦 4. Set the lore text
+        baseformSonicHead.set(DataComponents.LORE, new ItemLore(List.of(
+                Component.literal("Adapted from Sonic Frontiers").withStyle(style -> style.withColor(0xFF55FF)) // light_purple
+        )));
     }
+
+    public static ItemStack baseformLSSonicHead; static {
+        baseformLSSonicHead = new ItemStack(Items.PLAYER_HEAD);
+
+        // 🟦 1. Set the custom "BeyondTheHorizon" byte using CustomData
+        CompoundTag customTag = new CompoundTag();
+        customTag.putByte("BeyondTheHorizon", (byte) 2);
+        baseformLSSonicHead.set(DataComponents.CUSTOM_DATA, CustomData.of(customTag));
+
+        // 🟦 2. Set the SkullOwner with texture
+        GameProfile profile = new GameProfile(
+                new UUID(512370214, -95272899L ^ -2003262887L ^ 1067375885L), // Generate a mostly consistent UUID
+                "SonicFrontiers"
+        );
+        profile.getProperties().put("textures", new Property(
+                "textures",
+                "ewogICJ0aW1lc3RhbXAiIDogMTcyNjkyNzYxNjIxNSwKICAicHJvZmlsZUlkIiA6ICI2OTBmOTAwMTczZmQ0MDA5OGE2ZDc3Nzc2MWUwY2U4YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb25pY1J1c2hYMTIiLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2QyNzZmMGExMTBkMGEzNzhiNzdlNzk3OTBiZDc0ZjNiOWEzMmNhNzgyYWQ2MTQ2NjhhYWE1ZmM4MDg5MWIwMCIKICAgIH0KICB9Cn0="
+        ));
+        baseformLSSonicHead.set(DataComponents.PROFILE, new ResolvableProfile(profile));
+
+        // 🟦 3. Set the display name
+        baseformLSSonicHead.set(DataComponents.CUSTOM_NAME,
+                Component.literal("Sonic Head").withStyle(Style.EMPTY.withColor(0x0000FF).withItalic(false))
+        );
+
+        // 🟦 4. Set the lore text
+        baseformLSSonicHead.set(DataComponents.LORE, new ItemLore(List.of(
+                Component.literal("Light Speed Mode").withStyle(style -> style.withColor(0x55FFFF)) // light_purple
+        )));
+    }
+
+    public static ItemStack baseformPBSonicHead; static {
+        baseformPBSonicHead = new ItemStack(Items.PLAYER_HEAD);
+
+        // 🟦 1. Set the custom "BeyondTheHorizon" byte using CustomData
+        CompoundTag customTag = new CompoundTag();
+        customTag.putByte("BeyondTheHorizon", (byte) 2);
+        baseformPBSonicHead.set(DataComponents.CUSTOM_DATA, CustomData.of(customTag));
+
+        // 🟦 2. Set the SkullOwner with texture
+        GameProfile profile = new GameProfile(
+                new UUID(512370214, -95272899L ^ -2003262887L ^ 1067375885L), // Generate a mostly consistent UUID
+                "SonicFrontiers"
+        );
+        profile.getProperties().put("textures", new Property(
+                "textures",
+                "ewogICJ0aW1lc3RhbXAiIDogMTcyNzg5MTc2MDg1NywKICAicHJvZmlsZUlkIiA6ICI2OTBmOTAwMTczZmQ0MDA5OGE2ZDc3Nzc2MWUwY2U4YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJTb25pY1J1c2hYMTIiLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjdlMDM2OWQxYzQ3ZWYwZmFjMmVjNGE2MmI5NzgxZDZjOGE0NTRlOGNiYjBkOTg5ODgxMWVkNjlhZjhhOWJiZCIKICAgIH0KICB9Cn0="
+        ));
+        baseformPBSonicHead.set(DataComponents.PROFILE, new ResolvableProfile(profile));
+
+        // 🟦 3. Set the display name
+        baseformPBSonicHead.set(DataComponents.CUSTOM_NAME,
+                Component.literal("Sonic Head").withStyle(Style.EMPTY.withColor(0x0000FF).withItalic(false))
+        );
+
+        // 🟦 4. Set the lore text
+        baseformPBSonicHead.set(DataComponents.LORE, new ItemLore(List.of(
+                Component.literal("Power Boost").withStyle(style -> style.withColor(0x5555FF)) // blue
+        )));
+    }
+
+
 /*
     public static ItemStack baseformLSSonicHead; static {
         baseformLSSonicHead = new ItemStack(Items.PLAYER_HEAD);
