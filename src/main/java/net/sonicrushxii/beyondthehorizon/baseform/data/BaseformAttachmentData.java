@@ -16,7 +16,7 @@ public class BaseformAttachmentData extends AttachmentData
     @Override
     public CompoundTag serialize() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putString("currentForm",BeyondTheHorizon.MOD_ID+":base_form");
+        nbt.putString("currentForm",BeyondTheHorizon.MOD_ID+":baseform");
         nbt.putByteArray("cooldowns",cooldowns);
 
         return nbt;
@@ -25,5 +25,15 @@ public class BaseformAttachmentData extends AttachmentData
     @Override
     public void deserialize(CompoundTag nbt) {
         cooldowns = nbt.getByteArray("cooldowns");
+    }
+
+    @Override
+    public String toString() {
+        return this.serialize().toString();
+    }
+
+    @Override
+    public String getForm() {
+        return BeyondTheHorizon.MOD_ID+":baseform";
     }
 }

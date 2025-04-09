@@ -16,6 +16,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.sonicrushxii.beyondthehorizon.event_handlers.EquipmentChangeHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.PacketHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerEventHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientArmorHandler;
@@ -41,10 +42,12 @@ public class BeyondTheHorizon
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(ClientArmorHandler::clientItemInitialize);
+        modEventBus.addListener(PacketHandler::register);
 
         //Register Modded Components
         ModAttachments.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+
         ModItems.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.

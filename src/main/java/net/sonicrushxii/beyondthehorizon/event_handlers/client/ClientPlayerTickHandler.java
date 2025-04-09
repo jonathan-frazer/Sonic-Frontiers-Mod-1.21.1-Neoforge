@@ -3,6 +3,8 @@ package net.sonicrushxii.beyondthehorizon.event_handlers.client;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 
+import static net.sonicrushxii.beyondthehorizon.modded.ModAttachments.SONIC_DATA;
+
 public class ClientPlayerTickHandler
 {
     public static int tickCounter = 0;
@@ -26,6 +28,7 @@ public class ClientPlayerTickHandler
 
     private static void handleSecond(LocalPlayer player)
     {
-
+        //Client Data
+        System.out.println("Client Data: "+player.getData(SONIC_DATA));
     }
 }

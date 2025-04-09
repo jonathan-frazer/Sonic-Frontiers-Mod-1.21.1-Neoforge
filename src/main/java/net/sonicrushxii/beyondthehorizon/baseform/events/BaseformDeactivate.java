@@ -7,10 +7,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.sonicrushxii.beyondthehorizon.attachments.AttachmentData;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
 import net.sonicrushxii.beyondthehorizon.baseform.data.BaseformAttributeModifiers;
 import net.sonicrushxii.beyondthehorizon.baseform.data.BaseformItemData;
+import net.sonicrushxii.beyondthehorizon.attachments.SyncSonicData;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 import net.sonicrushxii.beyondthehorizon.modded.ModItems;
 
@@ -60,5 +62,8 @@ public class BaseformDeactivate
 
         playerSonicData.isSonic = false;
         playerSonicData.properties = new AttachmentData();
+
+        //Synchronize with Client
+        PacketDistributor.sendToPlayer(player,new SyncSonicData(playerSonicData.serializeNBT(null)));
     }
 }

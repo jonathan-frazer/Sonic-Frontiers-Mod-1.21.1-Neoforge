@@ -25,12 +25,6 @@ public class ServerPlayerEquipmentHandler {
 
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
 
-        tryBaseformTransform(player, playerSonicData);
-    }
-
-    private static void tryBaseformTransform(ServerPlayer player, PlayerSonicData playerSonicData) {
-        System.out.println("[" + System.currentTimeMillis() + "] ");
-
         ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 
         // === Check if we're wearing the correct Sonic head ===
@@ -52,5 +46,4 @@ public class ServerPlayerEquipmentHandler {
             BaseformDeactivate.onBaseformDeactivate(player);
         }
     }
-
 }

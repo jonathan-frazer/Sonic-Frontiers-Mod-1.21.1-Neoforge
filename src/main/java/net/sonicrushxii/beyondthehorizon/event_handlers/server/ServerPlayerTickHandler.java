@@ -2,6 +2,9 @@ package net.sonicrushxii.beyondthehorizon.event_handlers.server;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformServerTick;
+
+import static net.sonicrushxii.beyondthehorizon.modded.ModAttachments.SONIC_DATA;
 
 public class ServerPlayerTickHandler
 {
@@ -17,6 +20,8 @@ public class ServerPlayerTickHandler
         if (!player.isAlive())
             return;
 
+        //Run every second
+        BaseformServerTick.handleTick(player);
 
         //Every Second
         if (++tickCounter >= TICKS_PER_SECOND) {
@@ -27,6 +32,10 @@ public class ServerPlayerTickHandler
 
     private static void handleSecond(ServerPlayer player)
     {
+        //Run every second
+        BaseformServerTick.handleSecond(player);
 
+        //Server Data
+        System.err.println("Server Data: "+player.getData(SONIC_DATA));
     }
 }
