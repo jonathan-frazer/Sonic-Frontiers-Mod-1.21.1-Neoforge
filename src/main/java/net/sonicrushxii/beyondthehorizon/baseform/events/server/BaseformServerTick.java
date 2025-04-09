@@ -10,6 +10,6 @@ public class BaseformServerTick {
 
     public static void handleSecond(ServerPlayer player)
     {
-
+        System.out.println("Second");
     }
 }
