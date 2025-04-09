@@ -15,10 +15,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.sonicrushxii.beyondthehorizon.event_handlers.EquipmentChangeHandler;
-import net.sonicrushxii.beyondthehorizon.event_handlers.PacketHandler;
-import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerEventHandler;
-import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.*;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientArmorHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandler;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
@@ -53,6 +50,7 @@ public class BeyondTheHorizon
         // Register ourselves for server and other game events we are interested in.
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(PlayerEventHandler.class);
+        NeoForge.EVENT_BUS.register(LoginHandler.class);
         NeoForge.EVENT_BUS.register(PlayerTickHandler.class);
         NeoForge.EVENT_BUS.register(EquipmentChangeHandler.class);
         NeoForge.EVENT_BUS.register(ServerWorldHandler.class);
