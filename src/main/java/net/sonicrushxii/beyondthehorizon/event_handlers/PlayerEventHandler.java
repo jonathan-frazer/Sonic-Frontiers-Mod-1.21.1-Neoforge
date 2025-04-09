@@ -19,7 +19,6 @@ public class PlayerEventHandler {
             }
             //If Keep inventory True, Copy Data directly
             else {
-                event.getEntity().getData(SONIC_DATA).isSonic = event.getOriginal().getData(SONIC_DATA).isSonic;
                 event.getEntity().getData(SONIC_DATA).properties = event.getOriginal().getData(SONIC_DATA).properties;
             }
         }

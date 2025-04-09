@@ -17,11 +17,11 @@ public class AttachmentData
 
     @Override
     public String toString() {
-        return "{}";
+        return this.serialize().toString();
     }
-    //Make sure to Override when using real Attachments
-    public String getForm()
-    {
+
+    //Make sure to Override
+    public String getForm() {
         return BeyondTheHorizon.MOD_ID+":none";
     }
 }

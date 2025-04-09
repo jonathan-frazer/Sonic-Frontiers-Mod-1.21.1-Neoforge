@@ -10,7 +10,6 @@ import org.jetbrains.annotations.UnknownNullability;
 
 public class PlayerSonicData implements INBTSerializable<CompoundTag>
 {
-    public boolean isSonic;
     public AttachmentData properties;
 
     public static AttachmentData getFormDataInstance(String form)
@@ -22,14 +21,12 @@ public class PlayerSonicData implements INBTSerializable<CompoundTag>
     }
     public PlayerSonicData()
     {
-        isSonic = false;
         properties = new AttachmentData();
     }
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        nbt.putBoolean("isSonic", isSonic);
         nbt.put("properties", properties.serialize());
 
         return nbt;
@@ -37,7 +34,6 @@ public class PlayerSonicData implements INBTSerializable<CompoundTag>
 
     @Override
     public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag nbt) {
-        isSonic = nbt.getBoolean("isSonic");
         CompoundTag nbtProperties = nbt.getCompound("properties");
 
         //If forms don't match, Use the appropriate Child Instance
@@ -46,17 +42,18 @@ public class PlayerSonicData implements INBTSerializable<CompoundTag>
                     nbtProperties.getString("currentForm").substring(BeyondTheHorizon.MOD_ID.length()+1)
             );
 
-
-
         //Read the Data
         properties.deserialize(nbtProperties);
     }
 
     @Override
     public String toString() {
-        return "PlayerSonicData{" +
-                "isSonic=" + isSonic +
-                ", properties=" + properties +
-                '}';
+        return "PlayerSonicData{properties="+properties+"}";
     }
+
+    public boolean isSonic()
+    {
+        return !properties.getForm().equals(BeyondTheHorizon.MOD_ID+":none");
+    }
+
 }

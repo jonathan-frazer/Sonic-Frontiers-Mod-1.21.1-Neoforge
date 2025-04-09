@@ -1,4 +1,4 @@
-package net.sonicrushxii.beyondthehorizon.baseform.events;
+package net.sonicrushxii.beyondthehorizon.baseform.events.server;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -90,9 +90,6 @@ public class BaseformActivate
 
         //Extract Players Sonic Data
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
-
-        //Initialize Data
-        playerSonicData.isSonic = true;
         playerSonicData.properties = new BaseformAttachmentData();
 
         //Synchronize with Client

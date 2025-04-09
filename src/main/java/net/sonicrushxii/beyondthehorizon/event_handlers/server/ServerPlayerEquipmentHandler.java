@@ -9,14 +9,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
-import net.sonicrushxii.beyondthehorizon.baseform.events.BaseformActivate;
-import net.sonicrushxii.beyondthehorizon.baseform.events.BaseformDeactivate;
+import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformActivate;
+import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformDeactivate;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 
 import java.util.Objects;
 
 public class ServerPlayerEquipmentHandler {
-    public static void onEquipmentChange(Player pPlayer, LivingEquipmentChangeEvent event) {
+    public static void onEquipmentChange(Player pPlayer, LivingEquipmentChangeEvent event)
+    {
         // Only run on server
         if (!(pPlayer instanceof ServerPlayer player)) return;
 
@@ -32,18 +33,13 @@ public class ServerPlayerEquipmentHandler {
             CompoundTag customData = Objects.requireNonNull(headItem.get(DataComponents.CUSTOM_DATA)).copyTag();
 
             if (customData.contains("BeyondTheHorizon") && customData.getByte("BeyondTheHorizon") == 2) {
-                if (!playerSonicData.isSonic) {
-                    System.out.println("Transform");
-                    BaseformActivate.onBaseformActivate(player);
-                }
+                if (!playerSonicData.isSonic()) BaseformActivate.onBaseformActivate(player);
                 return; // If it's valid Sonic head, don't untransform
             }
         }
 
         // === If we get here, the player isn't wearing the correct head ===
-        if (playerSonicData.isSonic) {
-            System.out.println("Un-Transform");
+        if (playerSonicData.isSonic())
             BaseformDeactivate.onBaseformDeactivate(player);
-        }
     }
 }
