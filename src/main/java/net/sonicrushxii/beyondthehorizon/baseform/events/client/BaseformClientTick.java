@@ -10,6 +10,5 @@ public class BaseformClientTick
 
     public static void handleSecond(AbstractClientPlayer player)
     {
-        System.out.println("Second");
     }
 }

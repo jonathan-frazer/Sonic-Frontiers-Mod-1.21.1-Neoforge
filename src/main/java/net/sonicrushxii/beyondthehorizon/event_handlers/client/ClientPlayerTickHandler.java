@@ -2,6 +2,8 @@ package net.sonicrushxii.beyondthehorizon.event_handlers.client;
 
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.sonicrushxii.beyondthehorizon.BeyondTheHorizon;
+import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
 import net.sonicrushxii.beyondthehorizon.baseform.events.client.BaseformClientTick;
 
 import static net.sonicrushxii.beyondthehorizon.modded.ModAttachments.SONIC_DATA;
@@ -20,8 +22,12 @@ public class ClientPlayerTickHandler
         if (!player.isAlive())
             return;
 
-        //Handle Tick
-        BaseformClientTick.handleTick(player);
+        //Map to the other forms Handler's
+        PlayerSonicData playerSonicData = player.getData(SONIC_DATA);
+        switch(playerSonicData.properties.getForm().substring(BeyondTheHorizon.MOD_ID.length()+1))
+        {
+            case "baseform": BaseformClientTick.handleTick(player);
+        }
 
         //Every Second
         if (++tickCounter >= TICKS_PER_SECOND) {
@@ -33,7 +39,11 @@ public class ClientPlayerTickHandler
     private static void handleSecond(AbstractClientPlayer player)
     {
         //Run every second
-        BaseformClientTick.handleSecond(player);
+        PlayerSonicData playerSonicData = player.getData(SONIC_DATA);
+        switch(playerSonicData.properties.getForm().substring(BeyondTheHorizon.MOD_ID.length()+1))
+        {
+            case "baseform": BaseformClientTick.handleSecond(player);
+        }
 
         //Client Data
         System.out.println("Client Data: "+player.getData(SONIC_DATA));
