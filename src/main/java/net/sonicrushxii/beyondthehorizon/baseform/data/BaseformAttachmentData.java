@@ -7,8 +7,6 @@ import net.sonicrushxii.beyondthehorizon.attachments.AttachmentData;
 import net.sonicrushxii.beyondthehorizon.baseform.data.enums.*;
 import net.sonicrushxii.beyondthehorizon.baseform.data.exceptions.AbilityDoubleSetException;
 
-import java.util.ArrayList;
-
 public class BaseformAttachmentData extends AttachmentData
 {
     //Some Variables that seemed cooler to not have in Auxillary Counter
@@ -41,7 +39,7 @@ public class BaseformAttachmentData extends AttachmentData
         comboPointDisplay = 0;
 
         slotAbilityCooldowns = new byte[BaseformCooldowns.values().length];
-        state = new ByteStateHolder(new ArrayList<>(BaseformState.values().length));
+        state = new ByteStateHolder(BaseformState.values().length);
         activeAtkTimer = 0;
         currentActionAbility = BaseformActionAbility.NONE;
         currentHoldAbility = BaseformHoldAbility.NONE;
