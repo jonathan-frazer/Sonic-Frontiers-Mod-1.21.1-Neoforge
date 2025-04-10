@@ -27,7 +27,7 @@ public class ByteStateHolder
         this.byteArray = ByteStateHolder.toList(concurrentState);
     }
 
-    public void setBitPos(int pos)
+    public void setState(int pos)
     {
         int index = pos / 8;
 
@@ -40,7 +40,20 @@ public class ByteStateHolder
         byteArray.set(index, (byte) (byteArray.get(index) | (1 << pos % 8)));
     }
 
-    public boolean getBitPos(int pos)
+    public void clearState(int pos)
+    {
+        int index = pos / 8;
+
+        //Expand Array if it gets too long
+        while (index >= byteArray.size()) {
+            byteArray.add((byte) 0);
+        }
+
+        //Clear appropriate bit
+        byteArray.set(index, (byte) (byteArray.get(index) & ~(1 << pos % 8)));
+    }
+
+    public boolean getState(int pos)
     {
         int index = pos / 8;
         int bitPosition = pos % 8;
@@ -72,8 +85,8 @@ public class ByteStateHolder
     private static List<Byte> toList(byte[] abyte) {
         List<Byte> dataList = new ArrayList<>(abyte.length);
 
-        for (int i = 0; i < abyte.length; i++) {
-            dataList.add(abyte[i]);
+        for (byte b : abyte) {
+            dataList.add(b);
         }
 
         return dataList;

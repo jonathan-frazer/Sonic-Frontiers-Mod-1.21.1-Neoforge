@@ -21,6 +21,7 @@ import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandle
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 import net.sonicrushxii.beyondthehorizon.modded.ModCreativeModeTabs;
 import net.sonicrushxii.beyondthehorizon.modded.ModItems;
+import net.sonicrushxii.beyondthehorizon.modded.ModSounds;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -44,6 +45,7 @@ public class BeyondTheHorizon
         //Register Modded Components
         ModAttachments.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         ModItems.register(modEventBus);
 

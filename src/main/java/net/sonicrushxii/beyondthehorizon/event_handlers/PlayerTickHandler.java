@@ -10,7 +10,7 @@ import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerPlayerTickH
 
 public class PlayerTickHandler {
     @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent.Pre event)
+    public static void onPlayerTick(PlayerTickEvent.Post event)
     {
         Player player = event.getEntity();
         //Next
