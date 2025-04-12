@@ -9,7 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.sonicrushxii.beyondthehorizon.BeyondTheHorizon;
-import net.sonicrushxii.beyondthehorizon.baseform.data.BaseformItemData;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformItemData;
 
 public class ModCreativeModeTabs
 {

@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.sonicrushxii.beyondthehorizon.BeyondTheHorizon;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
-import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformServerTick;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server.BaseformServerTick;
 
 import static net.sonicrushxii.beyondthehorizon.modded.ModAttachments.SONIC_DATA;
 

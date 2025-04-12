@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import net.sonicrushxii.beyondthehorizon.baseform.data.BaseformItemData;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformItemData;
 import net.sonicrushxii.beyondthehorizon.event_handlers.CraftHandlers;
 
 import java.util.Objects;

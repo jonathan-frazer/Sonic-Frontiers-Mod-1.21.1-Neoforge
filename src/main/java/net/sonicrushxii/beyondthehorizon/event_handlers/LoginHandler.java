@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.sonicrushxii.beyondthehorizon.BeyondTheHorizon;
-import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformActivate;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server.BaseformActivate;
 
 import static net.sonicrushxii.beyondthehorizon.modded.ModAttachments.SONIC_DATA;
 

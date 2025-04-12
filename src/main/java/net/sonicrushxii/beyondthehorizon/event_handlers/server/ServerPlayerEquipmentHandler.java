@@ -9,8 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
-import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformActivate;
-import net.sonicrushxii.beyondthehorizon.baseform.events.server.BaseformDeactivate;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server.BaseformActivate;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server.BaseformDeactivate;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 
 import java.util.Objects;

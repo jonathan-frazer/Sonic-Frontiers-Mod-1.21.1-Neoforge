@@ -4,10 +4,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.sonicrushxii.beyondthehorizon.attachments.KeyPressData;
-import net.sonicrushxii.beyondthehorizon.attachments.SyncSonicData;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientDataPacketHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerDataPacketHandler;
+import net.sonicrushxii.beyondthehorizon.packet.KeyPressPacket;
+import net.sonicrushxii.beyondthehorizon.packet.SyncSonicPacket;
 
 public class PacketHandler
 {
@@ -18,8 +18,8 @@ public class PacketHandler
 
         //Sync Data
         registrar.playBidirectional(
-                SyncSonicData.TYPE,
-                SyncSonicData.STREAM_CODEC,
+                SyncSonicPacket.TYPE,
+                SyncSonicPacket.STREAM_CODEC,
                 new DirectionalPayloadHandler<>(
                         ClientDataPacketHandler::handleSyncSonicData,
                         ServerDataPacketHandler::handleSyncSonicData
@@ -28,8 +28,8 @@ public class PacketHandler
 
         //Key Press
         registrar.playToServer(
-                KeyPressData.TYPE,
-                KeyPressData.STREAM_CODEC,
+                KeyPressPacket.TYPE,
+                KeyPressPacket.STREAM_CODEC,
                 ServerDataPacketHandler::handleKeyPress
         );
     }

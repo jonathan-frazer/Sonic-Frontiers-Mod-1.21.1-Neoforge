@@ -2,21 +2,21 @@ package net.sonicrushxii.beyondthehorizon;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.ParryModelPre;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.Spindash;
 import net.sonicrushxii.beyondthehorizon.event_handlers.*;
-import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientArmorHandler;
+import net.sonicrushxii.beyondthehorizon.event_handlers.client.EntityRenderHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandler;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 import net.sonicrushxii.beyondthehorizon.modded.ModCreativeModeTabs;
@@ -39,7 +39,6 @@ public class BeyondTheHorizon
     {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(ClientArmorHandler::clientItemInitialize);
         modEventBus.addListener(PacketHandler::register);
 
         //Register Modded Components
@@ -53,25 +52,18 @@ public class BeyondTheHorizon
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(PlayerEventHandler.class);
         NeoForge.EVENT_BUS.register(LoginHandler.class);
+        NeoForge.EVENT_BUS.register(EntityRenderHandler.class);
         NeoForge.EVENT_BUS.register(PlayerTickHandler.class);
         NeoForge.EVENT_BUS.register(EquipmentChangeHandler.class);
         NeoForge.EVENT_BUS.register(ServerWorldHandler.class);
+        NeoForge.EVENT_BUS.register(FallDamageHandler.class);
 
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
-
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -92,6 +84,14 @@ public class BeyondTheHorizon
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+        @SubscribeEvent
+        public static void registerModelLayer(EntityRenderersEvent.RegisterLayerDefinitions event)
+        {
+            //Spin Dash
+            event.registerLayerDefinition(Spindash.LAYER_LOCATION,Spindash::createBodyLayer);
+            //Model Registration
+            event.registerLayerDefinition(ParryModelPre.LAYER_LOCATION,ParryModelPre::createBodyLayer);
         }
     }
 }
