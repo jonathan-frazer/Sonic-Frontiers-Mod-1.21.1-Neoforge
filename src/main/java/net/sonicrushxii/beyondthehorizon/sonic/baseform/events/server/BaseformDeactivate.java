@@ -10,6 +10,7 @@ import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.sonicrushxii.beyondthehorizon.attachments.AttachmentData;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
+import net.sonicrushxii.beyondthehorizon.packet.InitializeVirtualSlotPacket;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttributeModifiers;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformItemData;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
@@ -61,6 +62,8 @@ public class BaseformDeactivate
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
         playerSonicData.properties = new AttachmentData();
 
+        //Scrap Virtual Slot Handler
+        PacketDistributor.sendToPlayer(player,new InitializeVirtualSlotPacket((byte)0));
         //Synchronize with Client
         PacketDistributor.sendToPlayer(player,new SyncSonicPacket(playerSonicData.serializeNBT(null)));
     }

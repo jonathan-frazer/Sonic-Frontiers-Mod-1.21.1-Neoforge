@@ -3,6 +3,8 @@ package net.sonicrushxii.beyondthehorizon.event_handlers.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.sonicrushxii.beyondthehorizon.client.VirtualSlotHandler;
+import net.sonicrushxii.beyondthehorizon.packet.InitializeVirtualSlotPacket;
 import net.sonicrushxii.beyondthehorizon.packet.SyncSonicPacket;
 
 import static net.sonicrushxii.beyondthehorizon.modded.ModAttachments.SONIC_DATA;
@@ -19,5 +21,11 @@ public class ClientDataPacketHandler
         //Inject new Data into Client
         assert clientPlayer != null;
         clientPlayer.getData(SONIC_DATA).deserializeNBT(null,data.formDetails());
+    }
+
+    public static void handleVirtualSlotInitialization(final InitializeVirtualSlotPacket data, final IPayloadContext context) {
+        if (context.flow().isServerbound()) return;
+
+        VirtualSlotHandler.initialize(data.noOfSlots());
     }
 }

@@ -1,10 +1,15 @@
 package net.sonicrushxii.beyondthehorizon;
 
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
 import java.util.Random;
 
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
@@ -138,5 +143,44 @@ public class ModUtils
         boolean z = Math.abs(playerDeltaMovement.z()) < threshold;
 
         return !(x && y && z);
+    }
+
+    //Assumes Small Lists
+    public static boolean playerHasAllItems(Player player, List<String> itemStrings, String modid)
+    {
+        int itemsNeeded = itemStrings.size();
+        int itemsFound = 0;
+
+        // Convert item names into an array for fast lookup
+        Item[] requiredItems = new Item[itemsNeeded];
+
+        for (int i = 0; i < itemsNeeded; i++) {
+            requiredItems[i] = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(modid, itemStrings.get(i)));
+        }
+
+        // Iterate through inventory and count matches
+        for (ItemStack stack : player.getInventory().items) {
+            if (!stack.isEmpty()) {
+                for (Item item : requiredItems) {
+                    if (item != null && stack.getItem() == item) {
+                        itemsFound++;
+                        if (itemsFound == itemsNeeded) return true; // Early exit
+                    }
+                }
+            }
+        }
+
+        // Check offhand separately (optional)
+        ItemStack offhandStack = player.getOffhandItem();
+        if (!offhandStack.isEmpty()) {
+            for (Item item : requiredItems) {
+                if (item != null && offhandStack.getItem() == item) {
+                    itemsFound++;
+                    if (itemsFound == itemsNeeded) return true; // Early exit
+                }
+            }
+        }
+
+        return false; // Not all items were found
     }
 }

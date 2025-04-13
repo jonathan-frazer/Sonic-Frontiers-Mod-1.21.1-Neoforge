@@ -34,7 +34,7 @@ public class ServerDataPacketHandler
 
         ServerPlayer serverPlayer = (ServerPlayer) context.player();
 
-        if(keyCode == KeyBindings.DOUBLE_JUMP_MAPPING.getKey().getValue())
+        if(keyCode == KeyBindings.DOUBLE_JUMP.getKey().getValue())
             BaseformKeyPress.handleDoubleJump(serverPlayer);
         //else if ...
     }

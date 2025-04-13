@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
+import net.sonicrushxii.beyondthehorizon.packet.InitializeVirtualSlotPacket;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentData;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttributeModifiers;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformItemData;
@@ -23,6 +24,8 @@ import java.util.Objects;
 
 public class BaseformActivate
 {
+    private static final byte NO_OF_SLOTS = (byte)6;
+
     public static void onBaseformActivate(ServerPlayer player)
     {
         //Equip Armor
@@ -92,6 +95,8 @@ public class BaseformActivate
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
         playerSonicData.properties = new BaseformAttachmentData();
 
+        //Initialize the Virtual Slot Handler
+        PacketDistributor.sendToPlayer(player,new InitializeVirtualSlotPacket(NO_OF_SLOTS));
         //Synchronize with Client
         PacketDistributor.sendToPlayer(player,new SyncSonicPacket(playerSonicData.serializeNBT(null)));
     }

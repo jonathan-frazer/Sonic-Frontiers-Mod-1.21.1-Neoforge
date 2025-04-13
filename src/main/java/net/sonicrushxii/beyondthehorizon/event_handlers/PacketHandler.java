@@ -6,6 +6,7 @@ import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientDataPacketHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerDataPacketHandler;
+import net.sonicrushxii.beyondthehorizon.packet.InitializeVirtualSlotPacket;
 import net.sonicrushxii.beyondthehorizon.packet.KeyPressPacket;
 import net.sonicrushxii.beyondthehorizon.packet.SyncSonicPacket;
 
@@ -31,6 +32,13 @@ public class PacketHandler
                 KeyPressPacket.TYPE,
                 KeyPressPacket.STREAM_CODEC,
                 ServerDataPacketHandler::handleKeyPress
+        );
+
+        //Initialize Virtual Slot Packet
+        registrar.playToClient(
+                InitializeVirtualSlotPacket.TYPE,
+                InitializeVirtualSlotPacket.STREAM_CODEC,
+                ClientDataPacketHandler::handleVirtualSlotInitialization
         );
     }
 }

@@ -22,10 +22,10 @@ public class BaseformClientTick
             //Double Jump
             {
                 //Handle Key Press
-                while(KeyBindings.DOUBLE_JUMP_MAPPING.consumeClick())
+                while(KeyBindings.DOUBLE_JUMP.consumeClick())
                 {
                     //Send a KeyPress Packet to the Server
-                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.DOUBLE_JUMP_MAPPING.getKey().getValue()));
+                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.DOUBLE_JUMP.getKey().getValue()));
                 }
             }
         }

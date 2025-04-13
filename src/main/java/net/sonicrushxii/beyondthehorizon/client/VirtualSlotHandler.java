@@ -1,10 +1,10 @@
-package net.sonicrushxii.beyondthehorizon.sonic.baseform.data.client_only;
+package net.sonicrushxii.beyondthehorizon.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 
-public class BaseformSlotHandler {
+public class VirtualSlotHandler {
     private static byte NO_OF_SLOTS;
     private static byte currAbility;
 
@@ -37,7 +37,7 @@ public class BaseformSlotHandler {
 
         if (player != null && world != null)
         {
-            BaseformSlotHandler.setSlot(targetSlot);
+            VirtualSlotHandler.setSlot(targetSlot);
             //Consume All clicks before switching over to another slot
             //while(KeyBindings.INSTANCE.useAbility1.consumeClick());
             //while(KeyBindings.INSTANCE.useAbility2.consumeClick());
