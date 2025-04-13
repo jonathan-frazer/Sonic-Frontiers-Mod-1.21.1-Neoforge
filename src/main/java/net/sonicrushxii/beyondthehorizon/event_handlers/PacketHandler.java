@@ -6,9 +6,7 @@ import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.ClientDataPacketHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerDataPacketHandler;
-import net.sonicrushxii.beyondthehorizon.packet.InitializeVirtualSlotPacket;
-import net.sonicrushxii.beyondthehorizon.packet.KeyPressPacket;
-import net.sonicrushxii.beyondthehorizon.packet.SyncSonicPacket;
+import net.sonicrushxii.beyondthehorizon.packet.*;
 
 public class PacketHandler
 {
@@ -17,7 +15,7 @@ public class PacketHandler
         // Sets the current network version
         final PayloadRegistrar registrar = event.registrar("1");
 
-        //Sync Data
+        //Sync Sonic Data
         registrar.playBidirectional(
                 SyncSonicPacket.TYPE,
                 SyncSonicPacket.STREAM_CODEC,
@@ -27,7 +25,7 @@ public class PacketHandler
                 )
         );
 
-        //Key Press
+        //Key Press Packet
         registrar.playToServer(
                 KeyPressPacket.TYPE,
                 KeyPressPacket.STREAM_CODEC,
@@ -39,6 +37,20 @@ public class PacketHandler
                 InitializeVirtualSlotPacket.TYPE,
                 InitializeVirtualSlotPacket.STREAM_CODEC,
                 ClientDataPacketHandler::handleVirtualSlotInitialization
+        );
+
+        //Danger Sense Sounds
+        registrar.playToClient(
+                DangerSenseSoundPacket.TYPE,
+                DangerSenseSoundPacket.STREAM_CODEC,
+                ClientDataPacketHandler::handleDangerSenseSound
+        );
+
+        //Danger Sense Particle
+        registrar.playToClient(
+                DangerSenseParticlePacket.TYPE,
+                DangerSenseParticlePacket.STREAM_CODEC,
+                ClientDataPacketHandler::handleDangerSenseParticle
         );
     }
 }

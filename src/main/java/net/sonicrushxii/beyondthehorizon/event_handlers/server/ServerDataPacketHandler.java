@@ -36,6 +36,7 @@ public class ServerDataPacketHandler
 
         if(keyCode == KeyBindings.DOUBLE_JUMP.getKey().getValue())
             BaseformKeyPress.handleDoubleJump(serverPlayer);
-        //else if ...
+        else if(keyCode == KeyBindings.TOGGLE_DANGER_SENSE.getKey().getValue())
+            BaseformKeyPress.handleToggleDangerSense(serverPlayer);
     }
 }

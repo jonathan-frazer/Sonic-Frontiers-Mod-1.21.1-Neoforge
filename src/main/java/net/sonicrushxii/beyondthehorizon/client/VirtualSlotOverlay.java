@@ -137,7 +137,6 @@ public class VirtualSlotOverlay {
             guiComponent.fill(barX,barY, barX+barWidth, barY- SLOT_BAR_HEIGHT,SLOT_ABILITY.barAlphaColor());
         }
 
-
         //Additional Info
         if(SLOT_ABILITY.sideinfo != null)
             guiComponent.drawString(Minecraft.getInstance().font, SLOT_ABILITY.sideinfo,
@@ -329,7 +328,7 @@ public class VirtualSlotOverlay {
             int comboY = screenHeight / 2 - (imageHeight); // Slightly above the cursor
 
             // Render your texture
-            switch(1)
+            switch(0)
             {
                 case 0: break;
                 case 1: guiComponent.blit(GOOD_100, comboX, comboY, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);break;

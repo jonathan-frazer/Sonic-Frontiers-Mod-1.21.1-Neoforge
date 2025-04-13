@@ -27,6 +27,13 @@ public class KeyBindings
             CATEGORY // Mapping will be in the aforementioned category
     );
 
+    public static final KeyMapping TOGGLE_DANGER_SENSE = new KeyMapping(
+            "key."+ BeyondTheHorizon.MOD_ID+".ToggleDangerSense", // Will be localized using this translation key
+            InputConstants.Type.KEYSYM, // Default Mapping on the keyboard
+            GLFW.GLFW_KEY_P, // Default key is P
+            CATEGORY //Mapping will be in the aforementioned category
+    );
+
     public static final KeyMapping PARRY = new KeyMapping(
             "key."+ BeyondTheHorizon.MOD_ID +".ParryKey", // Will be localized using this translation key
             InputConstants.Type.KEYSYM, // Default mapping is on the keyboard
@@ -106,6 +113,7 @@ public class KeyBindings
         event.register(USE_ABILITY_4);
         event.register(USE_ABILITY_5);
         event.register(USE_ABILITY_6);
+        event.register(TOGGLE_DANGER_SENSE);
         event.register(PARRY);
         event.register(USE_SINGLE_ABILITY);
         event.register(USE_ULTIMATE_ABILITY);

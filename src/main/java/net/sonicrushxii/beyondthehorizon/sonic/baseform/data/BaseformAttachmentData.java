@@ -38,13 +38,23 @@ public class BaseformAttachmentData extends AttachmentData
         helpScreenPageNo = 0;
         comboPointDisplay = 0;
 
+        //Initialize Cooldowns
         slotAbilityCooldowns = new byte[BaseformCooldowns.values().length];
+
+        //Initialize States
         state = new ByteStateHolder(BaseformState.values().length);
+        state.setState(BaseformState.HAS_DOUBLE_JUMP.ordinal());
+        state.setState(BaseformState.DANGER_SENSE_ACTIVE.ordinal());
+        state.clearState(BaseformState.LIGHT_SPEED_STATE.ordinal());
+        state.clearState(BaseformState.POWER_BOOST_STATE.ordinal());
+
+        //Timers
         activeAtkTimer = 0;
         currentActionAbility = BaseformActionAbility.NONE;
         currentHoldAbility = BaseformHoldAbility.NONE;
         tearDownTimers = new int[BaseformActionAbility.values().length];
 
+        //Extra Properties/Data
         auxiliaryCounters = new int[BaseformAuxiliaryCounters.values().length];
         extraProperties = new CompoundTag();
     }
