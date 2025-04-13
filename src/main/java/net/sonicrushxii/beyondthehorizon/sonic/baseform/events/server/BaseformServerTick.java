@@ -103,6 +103,16 @@ public class BaseformServerTick {
                     PacketDistributor.sendToPlayer(player, new DangerSenseSoundPacket(false));
                 }
             }
+
+            //Combo Meter
+            {
+
+            }
+
+            //Step Up/Step Down
+            {
+
+            }
         }
 
         //End, Check if Packet needs to be synced
