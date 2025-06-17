@@ -13,15 +13,12 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.sonicrushxii.beyondthehorizon.modded.*;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.ParryModelPre;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.Spindash;
 import net.sonicrushxii.beyondthehorizon.event_handlers.*;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.EntityRenderHandler;
 import net.sonicrushxii.beyondthehorizon.event_handlers.server.ServerWorldHandler;
-import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
-import net.sonicrushxii.beyondthehorizon.modded.ModCreativeModeTabs;
-import net.sonicrushxii.beyondthehorizon.modded.ModItems;
-import net.sonicrushxii.beyondthehorizon.modded.ModSounds;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -45,6 +42,7 @@ public class BeyondTheHorizon
         ModAttachments.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
         ModSounds.register(modEventBus);
+        ModEffects.register(modEventBus);
 
         ModItems.register(modEventBus);
 
@@ -57,6 +55,7 @@ public class BeyondTheHorizon
         NeoForge.EVENT_BUS.register(EquipmentChangeHandler.class);
         NeoForge.EVENT_BUS.register(ServerWorldHandler.class);
         NeoForge.EVENT_BUS.register(FallDamageHandler.class);
+        NeoForge.EVENT_BUS.register(DamageHandler.class);
 
     }
 

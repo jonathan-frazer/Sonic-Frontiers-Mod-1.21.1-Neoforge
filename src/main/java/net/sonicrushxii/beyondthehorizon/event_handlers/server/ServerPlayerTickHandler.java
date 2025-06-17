@@ -43,8 +43,5 @@ public class ServerPlayerTickHandler
         {
             case "baseform":BaseformServerTick.handleSecond(player);
         }
-
-        //Server Data
-        System.err.println("Server Data: "+player.getData(SONIC_DATA));
     }
 }

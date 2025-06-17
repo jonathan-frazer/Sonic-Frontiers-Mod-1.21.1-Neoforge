@@ -47,8 +47,5 @@ public class ClientPlayerTickHandler
         {
             case "baseform": BaseformClientTick.handleSecond(player);
         }
-
-        //Client Data
-        System.out.println("Client Data: "+player.getData(SONIC_DATA));
     }
 }

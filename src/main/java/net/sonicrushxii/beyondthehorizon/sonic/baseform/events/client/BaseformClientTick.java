@@ -13,6 +13,8 @@ import net.sonicrushxii.beyondthehorizon.packet.KeyPressPacket;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentData;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformState;
 
+import java.util.Arrays;
+
 public class BaseformClientTick
 {
     public static void handleTick(AbstractClientPlayer player)
@@ -66,5 +68,9 @@ public class BaseformClientTick
 
     public static void handleSecond(AbstractClientPlayer player)
     {
+        PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
+        BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
+
+        System.err.println(Arrays.toString(baseformProperties.auxiliaryCounters));
     }
 }

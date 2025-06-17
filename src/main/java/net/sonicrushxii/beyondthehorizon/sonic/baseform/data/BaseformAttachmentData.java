@@ -26,7 +26,6 @@ public class BaseformAttachmentData extends AttachmentData
     public int activeAtkTimer; //Becomes -ve for Holding Abilities, For Automatic Teardown
     public int[] tearDownTimers;
 
-
     //Extra Details
     //Auxiliary Counters/Timers - Comes in handy for a few things
     public int[] auxiliaryCounters;

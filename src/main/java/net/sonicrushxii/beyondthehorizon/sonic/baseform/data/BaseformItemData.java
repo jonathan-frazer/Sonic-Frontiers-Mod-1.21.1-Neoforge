@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
@@ -20,14 +19,6 @@ public class BaseformItemData
 {
     public static CompoundTag baseformArmorNBTTag; static {
         baseformArmorNBTTag = new CompoundTag();
-        ListTag enchantmentList = new ListTag();
-        CompoundTag enchantment = new CompoundTag();
-        enchantment.putString("id", "minecraft:binding_curse");
-        enchantment.putShort("lvl", (short) 1);
-        enchantmentList.add(enchantment);
-        baseformArmorNBTTag.put("Enchantments", enchantmentList);
-        baseformArmorNBTTag.putInt("HideFlags", 127);
-        baseformArmorNBTTag.putByte("Unbreakable", (byte) 1);
         baseformArmorNBTTag.putByte("BeyondTheHorizon", (byte) 1);
     }
 

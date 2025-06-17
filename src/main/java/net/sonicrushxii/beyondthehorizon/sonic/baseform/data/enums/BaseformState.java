@@ -6,5 +6,6 @@ package net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums;
 
 public enum BaseformState {
     HAS_DOUBLE_JUMP, DANGER_SENSE_ACTIVE,
+    GROUND_TRACTION,
     LIGHT_SPEED_STATE, POWER_BOOST_STATE,
 }

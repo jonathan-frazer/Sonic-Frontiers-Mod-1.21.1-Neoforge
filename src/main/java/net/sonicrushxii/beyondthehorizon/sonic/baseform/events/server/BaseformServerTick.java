@@ -1,5 +1,6 @@
 package net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server;
 
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,6 +19,7 @@ import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentD
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformAuxiliaryCounters;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformState;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -106,13 +108,52 @@ public class BaseformServerTick {
 
             //Combo Meter
             {
+                //Attach Combo meter
+                if(auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_HIT_COUNT.ordinal()] > 0 && player.onGround()) {
+                    baseformProperties.comboPointDisplay = auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_HIT_COUNT.ordinal()];
+                    auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_CLEAR_TIMER.ordinal()] = 100;
+                    auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_HIT_COUNT.ordinal()] = 0;
+                    syncPacket = true;
+                }
 
+                //Clear Combo from Side of screen
+                if(auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_CLEAR_TIMER.ordinal()] > 0)
+                {
+                    --auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_CLEAR_TIMER.ordinal()];
+                    if(auxiliaryCounters[BaseformAuxiliaryCounters.COMBO_CLEAR_TIMER.ordinal()] == 0)
+                        baseformProperties.comboPointDisplay = 0;
+                    syncPacket = true;
+                }
             }
 
-            //Step Up/Step Down
+            //Melee Strikes
             {
-
+                //Clear if not attacking for a while
+                if(auxiliaryCounters[BaseformAuxiliaryCounters.MELEE_CLEAR_TIMER.ordinal()] > 0)
+                {
+                    --auxiliaryCounters[BaseformAuxiliaryCounters.MELEE_CLEAR_TIMER.ordinal()];
+                    if(auxiliaryCounters[BaseformAuxiliaryCounters.MELEE_CLEAR_TIMER.ordinal()] == 0) {
+                        auxiliaryCounters[BaseformAuxiliaryCounters.MELEE_HIT_COUNT.ordinal()] = 0;
+                        player.removeEffect(MobEffects.SLOW_FALLING);
+                    }
+                    syncPacket = true;
+                }
             }
+
+            //Step Down
+            if(!player.onGround() && player.isSprinting() && baseformProperties.state.getState(BaseformState.GROUND_TRACTION.ordinal()))
+            {
+                Level world = player.level();
+                System.out.println(player.getDeltaMovement());
+                baseformState.clearState(BaseformState.GROUND_TRACTION.ordinal());
+                if (player.getDeltaMovement().y > -0.38 && player.getDeltaMovement().y < 0.05)
+                {
+                    player.setDeltaMovement(player.getDeltaMovement().x,-0.40,player.getDeltaMovement().z);
+                    player.connection.send(new ClientboundSetEntityMotionPacket(player));
+                }
+            }
+            if(player.onGround())
+                baseformState.setState(BaseformState.GROUND_TRACTION.ordinal());
         }
 
         //End, Check if Packet needs to be synced
@@ -126,6 +167,9 @@ public class BaseformServerTick {
         BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
         int[] auxiliaryCounters = baseformProperties.auxiliaryCounters;
         ByteStateHolder baseformState = baseformProperties.state;
+
+        //Print out Auxilary Counters
+        System.out.println(Arrays.toString(auxiliaryCounters));
 
         //Cooldowns
         {

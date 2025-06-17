@@ -9,7 +9,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.sonicrushxii.beyondthehorizon.BeyondTheHorizon;
 import net.sonicrushxii.beyondthehorizon.KeyBindings;
+import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
 import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
+import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentData;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server.BaseformDamageHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -327,8 +331,12 @@ public class VirtualSlotOverlay {
             int comboX = screenWidth - imageWidth; // Adjust as needed
             int comboY = screenHeight / 2 - (imageHeight); // Slightly above the cursor
 
+            //Extract Data
+            PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
+            BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
+
             // Render your texture
-            switch(0)
+            switch(baseformProperties.comboPointDisplay/BaseformDamageHandler.DAMAGE_GRANULARITY)
             {
                 case 0: break;
                 case 1: guiComponent.blit(GOOD_100, comboX, comboY, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);break;
