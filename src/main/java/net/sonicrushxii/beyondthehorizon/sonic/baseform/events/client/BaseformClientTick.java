@@ -8,12 +8,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.sonicrushxii.beyondthehorizon.ByteStateHolder;
 import net.sonicrushxii.beyondthehorizon.KeyBindings;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
+import net.sonicrushxii.beyondthehorizon.client.VirtualSlotHandler;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 import net.sonicrushxii.beyondthehorizon.packet.KeyPressPacket;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentData;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformState;
-
-import java.util.Arrays;
 
 public class BaseformClientTick
 {
@@ -31,6 +30,7 @@ public class BaseformClientTick
                 || InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_LCONTROL));
         final boolean isShiftDown = (InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_RSHIFT)
                 || InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_LSHIFT));
+        final boolean isSpaceDown = InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_SPACE);
         final boolean holdingLeftClick = mc.options.keyAttack.isDown();
 
         //Passives
@@ -41,7 +41,7 @@ public class BaseformClientTick
                 while(KeyBindings.DOUBLE_JUMP.consumeClick())
                 {
                     //Send a KeyPress Packet to the Server
-                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.DOUBLE_JUMP.getKey().getValue()));
+                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.DOUBLE_JUMP.getKey().getValue(),VirtualSlotHandler.getCurrAbility(),""));
                 }
             }
 
@@ -59,9 +59,31 @@ public class BaseformClientTick
                                             ?"Danger Sense Inhibited":"Danger Sense Activated"
                             ),true);
 
-                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.TOGGLE_DANGER_SENSE.getKey().getValue()));
+                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.TOGGLE_DANGER_SENSE.getKey().getValue(),VirtualSlotHandler.getCurrAbility(),""));
                 }
             }
+
+            //Can't swim
+            if(player.isInWater()) {
+                player.setSprinting(false);
+            }
+        }
+
+        //Active Abilities
+        {
+            //Boost
+            if(VirtualSlotHandler.getCurrAbility() == 0)
+            {
+                //Boost Key Press
+                while(KeyBindings.USE_ABILITY_1.consumeClick())
+                {
+                    //Send a KeyPress Packet to the Server
+                    PacketDistributor.sendToServer(new KeyPressPacket(KeyBindings.USE_ABILITY_1.getKey().getValue(),VirtualSlotHandler.getCurrAbility(),""));
+                }
+            }
+            //Wall Boost
+            if(isSpaceDown && player.isSprinting())
+                PacketDistributor.sendToServer(new KeyPressPacket(-1, (byte) -1,"wallBoost"));
         }
 
     }
@@ -70,7 +92,5 @@ public class BaseformClientTick
     {
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
         BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
-
-        System.err.println(Arrays.toString(baseformProperties.auxiliaryCounters));
     }
 }

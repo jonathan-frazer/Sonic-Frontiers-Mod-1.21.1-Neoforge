@@ -46,6 +46,8 @@ public class BaseformAttachmentData extends AttachmentData
         state.setState(BaseformState.DANGER_SENSE_ACTIVE.ordinal());
         state.clearState(BaseformState.LIGHT_SPEED_STATE.ordinal());
         state.clearState(BaseformState.POWER_BOOST_STATE.ordinal());
+        state.clearState(BaseformState.BOOST_START_EFFECT.ordinal());
+        state.clearState(BaseformState.SPRINTING.ordinal());
 
         //Timers
         activeAtkTimer = 0;
@@ -71,7 +73,7 @@ public class BaseformAttachmentData extends AttachmentData
         nbt.putInt("ComboPoints",comboPointDisplay);
 
         nbt.putByteArray("Cooldowns",slotAbilityCooldowns);
-        nbt.putByteArray("State",state.getByteArray());
+        nbt.putByteArray("State", state.getByteArray());
 
         nbt.putIntArray("CurrentAbility",new int[]{currentActionAbility.ordinal(),currentHoldAbility.ordinal()});
         nbt.putInt("AbilityTimer",activeAtkTimer);

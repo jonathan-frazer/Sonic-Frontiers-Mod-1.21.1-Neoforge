@@ -45,7 +45,10 @@ public class ClientPlayerTickHandler
         PlayerSonicData playerSonicData = player.getData(SONIC_DATA);
         switch(playerSonicData.properties.getForm().substring(BeyondTheHorizon.MOD_ID.length()+1))
         {
-            case "baseform": BaseformClientTick.handleSecond(player);
+            case "baseform" -> BaseformClientTick.handleSecond(player);
+            case "superform" -> {}
+            case "starfallform" -> {}
+            case "hyperform" -> {}
         }
     }
 }

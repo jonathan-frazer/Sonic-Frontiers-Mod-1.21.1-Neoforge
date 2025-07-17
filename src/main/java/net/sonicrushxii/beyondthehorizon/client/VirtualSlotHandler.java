@@ -3,6 +3,7 @@ package net.sonicrushxii.beyondthehorizon.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.sonicrushxii.beyondthehorizon.KeyBindings;
 
 public class VirtualSlotHandler {
     private static byte NO_OF_SLOTS;
@@ -39,7 +40,7 @@ public class VirtualSlotHandler {
         {
             VirtualSlotHandler.setSlot(targetSlot);
             //Consume All clicks before switching over to another slot
-            //while(KeyBindings.INSTANCE.useAbility1.consumeClick());
+            while(KeyBindings.USE_ABILITY_1.consumeClick());
             //while(KeyBindings.INSTANCE.useAbility2.consumeClick());
             //while(KeyBindings.INSTANCE.useAbility3.consumeClick());
             //while(KeyBindings.INSTANCE.useAbility4.consumeClick());

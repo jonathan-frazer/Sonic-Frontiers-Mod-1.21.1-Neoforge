@@ -7,7 +7,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.sonicrushxii.beyondthehorizon.BeyondTheHorizon;
 
-public record KeyPressPacket(int keyCode) implements CustomPacketPayload
+public record KeyPressPacket(int keyCode,byte virtualSlotPos,String overrideAbilityName) implements CustomPacketPayload
 {
 
     public static final Type<KeyPressPacket> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(BeyondTheHorizon.MOD_ID, "key_press"));
@@ -17,6 +17,10 @@ public record KeyPressPacket(int keyCode) implements CustomPacketPayload
     public static final StreamCodec<ByteBuf, KeyPressPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT,
             KeyPressPacket::keyCode,
+            ByteBufCodecs.BYTE,
+            KeyPressPacket::virtualSlotPos,
+            ByteBufCodecs.STRING_UTF8,
+            KeyPressPacket::overrideAbilityName,
             KeyPressPacket::new
     );
 

@@ -25,6 +25,7 @@ public class PacketHandler
                 )
         );
 
+
         //Key Press Packet
         registrar.playToServer(
                 KeyPressPacket.TYPE,

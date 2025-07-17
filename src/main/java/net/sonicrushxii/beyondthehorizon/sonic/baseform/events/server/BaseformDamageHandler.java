@@ -63,6 +63,14 @@ public class BaseformDamageHandler
                     damageGiver.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 12, 10, false, false));
                     damageGiver.connection.send(new ClientboundSetEntityMotionPacket(damageGiver));
                 }
+                //If in the Air Sustain them
+                if (!damageTaker.onGround())
+                {
+                    damageTaker.setDeltaMovement(new Vec3(damageTaker.getDeltaMovement().x,0.0,damageTaker.getDeltaMovement().z));
+                    damageTaker.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 12, 10, false, false));
+                    damageGiver.connection.send(new ClientboundSetEntityMotionPacket(damageTaker));
+                }
+
 
                 if (auxiliaryCounters[BaseformAuxiliaryCounters.MELEE_HIT_COUNT.ordinal()] == 2)
                 {

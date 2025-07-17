@@ -3,6 +3,8 @@ package net.sonicrushxii.beyondthehorizon;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +18,7 @@ import java.util.Random;
 
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
 // Demonstrates how to use Neo's config APIs
-public class ModUtils
+public class    ModUtils
 {
     public static Random random = new Random();
 
@@ -187,6 +189,18 @@ public class ModUtils
             )
             );
 
+    //User Defined Functions for things that should be available
+    public static Vec3 calculateViewVector(float pXRot, float pYRot)
+    {
+        float f = pXRot * ((float)Math.PI / 180F);
+        float f1 = -pYRot * ((float)Math.PI / 180F);
+        float f2 = Mth.cos(f1);
+        float f3 = Mth.sin(f1);
+        float f4 = Mth.cos(f);
+        float f5 = Mth.sin(f);
+        return new Vec3((f3 * f4), (-f5), (f2 * f4));
+    }
+
     public static void displayParticle(Level world, ParticleOptions particleType,
                                        double absX, double absY, double absZ,
                                        float radiusX, float radiusY, float radiusZ,
@@ -302,6 +316,25 @@ public class ModUtils
             world.addParticle(particleType,
                     point.x, point.y, point.z,
                     0, 0, 0);
+        }
+    }
+
+    public static void particleRaycast(ServerLevel world, ParticleOptions particleType,
+                                       Vec3 pos1, Vec3 pos2)
+    {
+        // Calculate the vector from pos1 to pos2
+        Vec3 direction = pos2.subtract(pos1);
+
+        double distance = direction.length();
+        Vec3 directionNormalized = direction.normalize();
+
+        for (int i = 0; i <= (int) distance*2; i++)
+        {
+            Vec3 point = pos1.add(directionNormalized.scale((i+1)/2.0));
+            world.sendParticles(particleType,
+                    point.x, point.y, point.z,
+                    1,
+                    0, 0,0,0);
         }
     }
 

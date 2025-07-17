@@ -32,6 +32,7 @@ import java.util.Objects;
 
 public class BaseformActivate
 {
+    public static int NO_OF_AIR_BOOSTS = 3;
     private static final byte NO_OF_SLOTS = (byte)6;
 
     public static void onBaseformActivate(ServerPlayer player)

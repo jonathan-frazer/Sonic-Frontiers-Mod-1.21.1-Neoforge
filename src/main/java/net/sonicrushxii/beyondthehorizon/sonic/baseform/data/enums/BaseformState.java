@@ -1,11 +1,12 @@
 package net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums;
 
-//Stores State, Ensure Default State is False
-//For example: When you enter a game, you Have a double jump. So making a HasDoubleJump=True. Wouldn't work
-//Instead you must use ConsumedDoubleJump=False.
-
+//Can only have values of 1 and 0
 public enum BaseformState {
     HAS_DOUBLE_JUMP, DANGER_SENSE_ACTIVE,
     GROUND_TRACTION,
+    BOOST_START_EFFECT, //The Lv.3 Woosh Effect
+    WATER_BOOSTING,
+    SPRINTING,
+    BALL_FORM_AERIAL,BALL_FORM_GROUND,
     LIGHT_SPEED_STATE, POWER_BOOST_STATE,
 }

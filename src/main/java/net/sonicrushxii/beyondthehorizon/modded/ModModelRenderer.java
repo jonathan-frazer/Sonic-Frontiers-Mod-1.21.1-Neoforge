@@ -77,7 +77,7 @@ public class ModModelRenderer {
         }
     }
 
-    public static void renderPlayerModel(Class<? extends EntityModel> modelClass, RenderLivingEvent<?, ?> event, PoseStack poseStack, AttachmentData formProperties, Consumer<ModelPart> customTransform)
+    public static void renderPlayerModel(Class<? extends EntityModel> modelClass, RenderLivingEvent<?, ?> event, PoseStack poseStack, AttachmentData attachmentData, Consumer<ModelPart> customTransform)
     {
         MultiBufferSource buffer = event.getMultiBufferSource();
         AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
@@ -100,7 +100,7 @@ public class ModModelRenderer {
             StringBuilder texturePath = new StringBuilder();
 
             //Handle Baseform Rendering
-            if (formProperties instanceof BaseformAttachmentData baseformProperties)
+            if (attachmentData instanceof BaseformAttachmentData baseformAttachmentData)
             {
                 texturePath.append("baseform");
             }
@@ -151,6 +151,68 @@ public class ModModelRenderer {
             EntityModel model = modelClass.getConstructor(ModelPart.class).newInstance(modelPart);
             model.renderToBuffer(poseStack, vertexConsumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0.0F));
 
+        } catch (NullPointerException | ClassCastException | NoSuchMethodError | NoSuchFieldException |
+                 NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException ignored) {
+        }
+    }
+    public static void renderSonicPeelout(Class<? extends EntityModel> modelClass, RenderLivingEvent<?, ?> event, PoseStack poseStack, AttachmentData attachmentData, Consumer<ModelPart> customTransform) {
+        MultiBufferSource buffer = event.getMultiBufferSource();
+        AbstractClientPlayer player = (AbstractClientPlayer) event.getEntity();
+        int packedLight = event.getPackedLight();
+
+        // Render the custom model
+        try {
+            //Get Layer Location
+            Field layerField = modelClass.getDeclaredField("LAYER_LOCATION");
+            ModelLayerLocation layerLocation = (ModelLayerLocation) layerField.get(null);
+
+            //Find Model
+            EntityModelSet entityModelSet = Minecraft.getInstance().getEntityModels();
+            ModelPart modelPart = entityModelSet.bakeLayer(layerLocation);
+
+            //Perform Custom Transform
+            if (customTransform != null) customTransform.accept(modelPart);
+
+            //Texture Path
+            StringBuilder texturePath = new StringBuilder();
+
+            //Handle Baseform Rendering
+            if (attachmentData instanceof BaseformAttachmentData baseformAttachmentData)
+            {
+                texturePath.append("baseform/");
+
+                //Find Texture based on Condition
+                /*if (baseformProperties.lightSpeedState == 2) texturePath.append("lightspeed_skin_peelout");
+                else if (baseformProperties.powerBoost) texturePath.append("powerboost_skin_peelout");*/
+
+                texturePath.append("base_skin_peelout");
+            }
+
+            //Handle Superform Rendering
+
+            //Handle Starfall Rendering
+
+            //Handle HyperForm Rendering
+
+
+            VertexConsumer vertexConsumer;
+            //Handle Default Player Rendering
+            if (texturePath.isEmpty()) {
+                vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(
+                        player.getSkin().texture()
+                ));
+            }
+            //Handle Custom Rendering
+            else {
+                vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(
+                        ResourceLocation.fromNamespaceAndPath(BeyondTheHorizon.MOD_ID, String.format("textures/custom_model/%s.png", texturePath))
+                ));
+
+            }
+
+            EntityModel model = modelClass.getConstructor(ModelPart.class).newInstance(modelPart);
+            model.renderToBuffer(poseStack, vertexConsumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0.0F));
         } catch (NullPointerException | ClassCastException | NoSuchMethodError | NoSuchFieldException |
                  NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException ignored) {

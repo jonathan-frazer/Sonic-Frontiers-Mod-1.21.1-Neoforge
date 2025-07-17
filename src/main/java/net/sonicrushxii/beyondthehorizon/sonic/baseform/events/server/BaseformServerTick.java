@@ -1,7 +1,11 @@
 package net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server;
 
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
@@ -12,14 +16,15 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.sonicrushxii.beyondthehorizon.ByteStateHolder;
 import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
+import net.sonicrushxii.beyondthehorizon.modded.ModSounds;
 import net.sonicrushxii.beyondthehorizon.packet.DangerSenseParticlePacket;
 import net.sonicrushxii.beyondthehorizon.packet.DangerSenseSoundPacket;
 import net.sonicrushxii.beyondthehorizon.packet.SyncSonicPacket;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentData;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformAuxiliaryCounters;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformState;
+import org.joml.Vector3f;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +34,7 @@ public class BaseformServerTick {
     {
         //Checks if Packet should be synced this tick.
         boolean syncPacket = false;
+        ServerLevel world = player.serverLevel();
 
         //Extract Data
         PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
@@ -61,7 +67,6 @@ public class BaseformServerTick {
             //Danger Sense
             if(baseformState.getState(BaseformState.DANGER_SENSE_ACTIVE.ordinal()))
             {
-                Level world = player.level();
                 List<Mob> mobList = world.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(10.0), (entity) -> {
                     try {
                         return Objects.requireNonNull(entity.getTarget()).getUUID().equals(player.getUUID());
@@ -106,6 +111,24 @@ public class BaseformServerTick {
                 }
             }
 
+            //Step Down
+            if(!player.onGround() && player.isSprinting()
+                    && baseformState.getState(BaseformState.GROUND_TRACTION.ordinal())
+                    && !baseformState.getState(BaseformState.WATER_BOOSTING.ordinal()))
+            {
+                baseformState.clearState(BaseformState.GROUND_TRACTION.ordinal());
+                if (player.getDeltaMovement().y > -0.38 && player.getDeltaMovement().y < 0.05)
+                {
+                    player.setDeltaMovement(player.getDeltaMovement().x,-0.40,player.getDeltaMovement().z);
+                    player.connection.send(new ClientboundSetEntityMotionPacket(player));
+                }
+                syncPacket = true;
+            }
+            if(player.onGround()) {
+                baseformState.setState(BaseformState.GROUND_TRACTION.ordinal());
+                syncPacket = true;
+            }
+
             //Combo Meter
             {
                 //Attach Combo meter
@@ -139,21 +162,104 @@ public class BaseformServerTick {
                     syncPacket = true;
                 }
             }
+        }
 
-            //Step Down
-            if(!player.onGround() && player.isSprinting() && baseformProperties.state.getState(BaseformState.GROUND_TRACTION.ordinal()))
+        //Active Abilities
+        {
+            int boostLvl = auxiliaryCounters[BaseformAuxiliaryCounters.BOOST_LV_COUNTER.ordinal()];
+            //Boost
             {
-                Level world = player.level();
-                System.out.println(player.getDeltaMovement());
-                baseformState.clearState(BaseformState.GROUND_TRACTION.ordinal());
-                if (player.getDeltaMovement().y > -0.38 && player.getDeltaMovement().y < 0.05)
+                //Air Boost
                 {
-                    player.setDeltaMovement(player.getDeltaMovement().x,-0.40,player.getDeltaMovement().z);
-                    player.connection.send(new ClientboundSetEntityMotionPacket(player));
+                    //Handle Counter
+                    int airBoostCount = auxiliaryCounters[BaseformAuxiliaryCounters.AIR_BOOST_COUNTER.ordinal()];
+                    if(player.onGround())
+                    {
+                        //Reset Counter
+                        if(airBoostCount < BaseformActivate.NO_OF_AIR_BOOSTS) {
+                            airBoostCount = BaseformActivate.NO_OF_AIR_BOOSTS;
+                            syncPacket = true;
+                        }
+                        //Reset Ballform
+                        if(baseformState.getState(BaseformState.BALL_FORM_AERIAL.ordinal())) {
+                            baseformState.clearState(BaseformState.BALL_FORM_AERIAL.ordinal());
+                            syncPacket = true;
+                        }
+                    }
+
+                    auxiliaryCounters[BaseformAuxiliaryCounters.AIR_BOOST_COUNTER.ordinal()] = airBoostCount;
+                }
+
+                //Land Boost
+                {
+                    //Start Sprinting
+                    if(player.isSprinting() && !baseformState.getState(BaseformState.SPRINTING.ordinal()))
+                    {
+                        switch (boostLvl) {
+                            case 0:
+                                player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5);
+                                break;
+                            case 1:
+                                player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.75);
+                                break;
+                            case 2:
+                                player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.00);
+                                break;
+                            case 3:
+                                if (!baseformState.getState(BaseformState.BOOST_START_EFFECT.ordinal())) {
+                                    world.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.MAX_BOOST.value(), SoundSource.MASTER, 1.0f, 1.0f);
+                                    world.sendParticles(ParticleTypes.FLASH,
+                                            player.getX(), player.getY() + 1.0, player.getZ(), 1,
+                                            0.01f, 0.01f, 0.01f, 0.001);
+                                    world.sendParticles(ParticleTypes.SONIC_BOOM,
+                                            player.getX(), player.getY() + 1.0, player.getZ(), 1,
+                                            0.01f, 0.01f, 0.01f, 0.001);
+                                    baseformState.setState(BaseformState.BOOST_START_EFFECT.ordinal());
+                                    syncPacket = true;
+                                }
+                                player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1.25);
+                                break;
+                        }
+                        baseformState.setState(BaseformState.SPRINTING.ordinal());
+                        syncPacket = true;
+                    }
+                    //While Sprinting
+                    if(baseformState.getState(BaseformState.SPRINTING.ordinal()))
+                    {
+                        //Particle Effects
+                        switch (boostLvl)
+                        {
+                            case 1: world.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                                    player.getX(), player.getY()+0.05, player.getZ(), 1,
+                                    0.00f, 0.00f, 0.00f, 0.001);
+                                break;
+                            case 2:
+                                world.sendParticles(new DustParticleOptions(new Vector3f(1.0f,0.0f,0.0f), 2f),
+                                        player.getX(), player.getY()+0.35, player.getZ(), 12,
+                                        0.05f, 0.05f, 0.05f, 0.001);
+                                break;
+                            case 3:
+                                world.sendParticles(new DustParticleOptions(new Vector3f(0.0f, 0.89f, 1.00f), 1),
+                                        player.getX(), player.getY()+1.0, player.getZ(), 12,
+                                        0.05f, 0.20f, 0.05f, 0.001);
+                                break;
+                            default:
+                        }
+                    }
+                    //Stop Sprinting
+                    if(baseformState.getState(BaseformState.SPRINTING.ordinal()) && !player.isSprinting())
+                    {
+                        baseformState.clearState(BaseformState.SPRINTING.ordinal());
+                        syncPacket = true;
+                        player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.5);
+                    }
+                }
+
+                //Water Boost - I hate this ability, it's the WORST ever
+                {
+
                 }
             }
-            if(player.onGround())
-                baseformState.setState(BaseformState.GROUND_TRACTION.ordinal());
         }
 
         //End, Check if Packet needs to be synced
@@ -167,9 +273,6 @@ public class BaseformServerTick {
         BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
         int[] auxiliaryCounters = baseformProperties.auxiliaryCounters;
         ByteStateHolder baseformState = baseformProperties.state;
-
-        //Print out Auxilary Counters
-        System.out.println(Arrays.toString(auxiliaryCounters));
 
         //Cooldowns
         {
@@ -188,7 +291,8 @@ public class BaseformServerTick {
             //Effects
             {
                 //Speed
-                Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.5);
+                if(Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED)).getBaseValue() < 0.5)
+                    Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.5);
 
                 //Jump
                 if(!player.hasEffect(MobEffects.JUMP)) player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 2, false, false));

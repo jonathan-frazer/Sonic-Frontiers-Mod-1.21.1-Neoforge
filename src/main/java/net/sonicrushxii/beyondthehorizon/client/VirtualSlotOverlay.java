@@ -13,6 +13,7 @@ import net.sonicrushxii.beyondthehorizon.attachments.PlayerSonicData;
 import net.sonicrushxii.beyondthehorizon.event_handlers.PlayerTickHandler;
 import net.sonicrushxii.beyondthehorizon.modded.ModAttachments;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.BaseformAttachmentData;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.data.enums.BaseformAuxiliaryCounters;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.events.server.BaseformDamageHandler;
 
 import javax.annotation.Nullable;
@@ -171,6 +172,9 @@ public class VirtualSlotOverlay {
         int x = textureDimensions[0]; //screenWidth  - (int)(textureDimensions[0]*1.5);
         int y = 0;
 
+        PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
+        BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
+
         //Render Slot Ability
         {
             String slotName;
@@ -189,7 +193,7 @@ public class VirtualSlotOverlay {
                 case 0:
                     slotName = "Boost";
                     iconTextures = Arrays.asList(
-                            new Ability(BOOST_SLOT, null, (byte) 0, null, null),
+                            new Ability(BOOST_SLOT, "Lv. "+baseformProperties.auxiliaryCounters[BaseformAuxiliaryCounters.BOOST_LV_COUNTER.ordinal()], (byte) 0, null, null),
                             new Ability(LIGHT_SPEED_ATTACK_SLOT, null, (byte) 0, null, null),
                             new Ability(POWER_BOOST_SLOT, null, (byte) 0, null, null),
                             new Ability(CYLOOP_SLOT, null, (byte) 0, null, null)
@@ -330,10 +334,6 @@ public class VirtualSlotOverlay {
 
             int comboX = screenWidth - imageWidth; // Adjust as needed
             int comboY = screenHeight / 2 - (imageHeight); // Slightly above the cursor
-
-            //Extract Data
-            PlayerSonicData playerSonicData = player.getData(ModAttachments.SONIC_DATA);
-            BaseformAttachmentData baseformProperties = (BaseformAttachmentData) playerSonicData.properties;
 
             // Render your texture
             switch(baseformProperties.comboPointDisplay/BaseformDamageHandler.DAMAGE_GRANULARITY)

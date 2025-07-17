@@ -15,6 +15,8 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.sonicrushxii.beyondthehorizon.modded.*;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.ParryModelPre;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.SonicBoostModel;
+import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.SonicPeeloutModel;
 import net.sonicrushxii.beyondthehorizon.sonic.baseform.models.Spindash;
 import net.sonicrushxii.beyondthehorizon.event_handlers.*;
 import net.sonicrushxii.beyondthehorizon.event_handlers.client.EntityRenderHandler;
@@ -87,6 +89,9 @@ public class BeyondTheHorizon
         @SubscribeEvent
         public static void registerModelLayer(EntityRenderersEvent.RegisterLayerDefinitions event)
         {
+            //Boost Models
+            event.registerLayerDefinition(SonicPeeloutModel.LAYER_LOCATION,SonicPeeloutModel::createBodyLayer);
+            event.registerLayerDefinition(SonicBoostModel.LAYER_LOCATION,SonicBoostModel::createBodyLayer);
             //Spin Dash
             event.registerLayerDefinition(Spindash.LAYER_LOCATION,Spindash::createBodyLayer);
             //Model Registration
